@@ -14,10 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 app.get('/lab7',function (req,res,next) {
-    res.render("lab7/index.html",{
-        image: ""
-        }
-    );
+    res.render("lab7/index.html");
 });
 app.post("/lab7", async function (req,res,next) {
     //console.log(req.query.q, req.query.orientatio);
@@ -29,7 +26,7 @@ app.post("/lab7", async function (req,res,next) {
     let parsedData = await getImages(keyword);
     console.log(parsedData.hits.length);
 
-    res.json( {parsedData});
+    res.json( {"image": parsedData});
     // res.json(
     //     {
     //         original: req.body
