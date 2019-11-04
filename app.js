@@ -16,24 +16,24 @@ app.use(express.urlencoded({extended: false}));
 app.get('/lab7',function (req,res,next) {
     res.render("lab7/index.html");
 });
-app.post("/lab7", async function (req,res,next) {
-    //console.log(req.query.q, req.query.orientatio);
-    //console.log(req.body);
-    //console.log(req.body[0]);
-    console.log(req.body.keyword);
-    let keyword = req.body.keyword; //gets the value that the user typed in the form using the GET method
-
-    let parsedData = await getImages(keyword);
-    console.log(parsedData.hits.length);
-
-    res.json( {"image": parsedData});
-    // res.json(
-    //     {
-    //         original: req.body
-    //     }
-    //);
-    //getImages(req.query.q,req.query.orientatio);
-});
+// app.post("/lab7", async function (req,res,next) {
+//     //console.log(req.query.q, req.query.orientatio);
+//     //console.log(req.body);
+//     //console.log(req.body[0]);
+//     console.log(req.body.keyword);
+//     let keyword = req.body.keyword; //gets the value that the user typed in the form using the GET method
+//
+//     let parsedData = await getImages(keyword);
+//     console.log(parsedData.hits.length);
+//
+//     res.json( {"image": parsedData});
+//     // res.json(
+//     //     {
+//     //         original: req.body
+//     //     }
+//     //);
+//     //getImages(req.query.q,req.query.orientatio);
+// });
 app.get("/", function (req,res,next) {
     res.render("lab6/index.html");
 });
