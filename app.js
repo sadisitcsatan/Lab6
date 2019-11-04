@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 app.get('/lab7',function (req,res,next) {
-    res.render("lab6/earth.html");
+    res.render("lab7/earth.html");
 });
 // app.post("/lab7", async function (req,res,next) {
 //     //console.log(req.query.q, req.query.orientatio);
