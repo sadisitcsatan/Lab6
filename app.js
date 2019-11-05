@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 const request = require('request');
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
 
 var project4Router = require('./routes/proj4');
 var lab8Router = require('./routes/lab8');
@@ -28,7 +31,7 @@ app.post("/lab7", async function (req,res,next) {
     let parsedData = await getImages(keyword);
     console.log(parsedData.hits.length);
 
-    res.json( {"image": parsedData});
+    res.json( { parsedData});
     // res.json(
     //     {
     //         original: req.body

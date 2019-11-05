@@ -172,18 +172,18 @@
             }
             $.ajax({
                 url: "/lab8",
-                method: "post",
+                method: "POST",
                 contentType: "application/json",
                 data: JSON.stringify({
                     questions: {
                         "1": $("#q1").val(),
-                        "2":$("#q2").val(),
-                        "3": q3,
-                        "4": $("input[name=q4]:checked").val(),
-                        "5": q5_response,
-                        "6": $("#q6").val(),
-                        "7": $("#q7").val(),
-                        "8": q8
+                        "2":$("#q2").val()
+                        // "3": q3,
+                        // "4": $("input[name=q4]:checked").val(),
+                        // "5": q5_response,
+                        // "6": $("#q6").val(),
+                        // "7": $("#q7").val(),
+                        // "8": q8
                     }
                 }),
                 dataType: "json",
@@ -191,7 +191,7 @@
                     // Step 5. Process the results by changing the HTML
                     // to display the results of the quiz
                     console.log('result of call to POST router', result);
-                    $("#q1").val(result.original.questions["1"]);
+                    $("#q1").val(result.questions["1"]);
                 },
                 error: function(xhr, status) {
                     console.log('error calling to POST router', status);
