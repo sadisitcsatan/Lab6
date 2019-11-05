@@ -132,75 +132,159 @@
             return isValid;
         }
         $(".submit").on("click touchstart", function(e) {
-
-            // Step 3. Make the AJAX POST call back to the server
-            // making sure to get values of the inputs AND
-            // to convert the data to a string using JSON.stringify()
-            var jefferson = $("#Jefferson").is(":checked");
-            var roosevelt = $("#Roosevelt").is(":checked");
-            var jackson = $("#Jackson").is(":checked");
-            var franklin = $("#Franklin").is(":checked");
-            let q3 = [];
-            if(jefferson){
-                q3.push("Jefferson");
-            }
-            if (roosevelt){
-                q3.push("Roosevelt");
-            }
-            if(jackson){
-                q3.push("Jackson");
-            }
-            if(franklin){
-                q3.push("Franklin");
-            }
-            var red = $("#Red").is(":checked");
-            var white = $("#White").is(":checked");
-            var blue = $("#Blue").is(":checked");
-            var green = $("#Green").is(":checked");
-            let q8 = [];
-            if (red){
-                q8.push("Red");
-            }
-            if (white){
-                q8.push("White");
-            }
-            if (blue){
-                q8.push("Blue");
-            }
-            if (green){
-                q8.push("Green");
-            }
-            $.ajax({
-                url: "/lab8",
-                method: "POST",
-                contentType: "application/json",
-                data: JSON.stringify({
-                    questions: {
-                        "1": $("#q1").val(),
-                        "2":$("#q2").val()
-                        // "3": q3,
-                        // "4": $("input[name=q4]:checked").val(),
-                        // "5": q5_response,
-                        // "6": $("#q6").val(),
-                        // "7": $("#q7").val(),
-                        // "8": q8
-                    }
-                }),
-                dataType: "json",
-                success: function(result){
-                    // Step 5. Process the results by changing the HTML
-                    // to display the results of the quiz
-                    console.log('result of call to POST router', result);
-                    $("#q1").val(result.questions["1"]);
-                },
-                error: function(xhr, status) {
-                    console.log('error calling to POST router', status);
-                },
-                complete: function() {
+            if (isFormValid()) {
+                // Step 3. Make the AJAX POST call back to the server
+                // making sure to get values of the inputs AND
+                // to convert the data to a string using JSON.stringify()
+                var jefferson = $("#Jefferson").is(":checked");
+                var roosevelt = $("#Roosevelt").is(":checked");
+                var jackson = $("#Jackson").is(":checked");
+                var franklin = $("#Franklin").is(":checked");
+                let q3 = [];
+                if (jefferson) {
+                    q3.push("Jefferson");
                 }
-            });
-        });
+                if (roosevelt) {
+                    q3.push("Roosevelt");
+                }
+                if (jackson) {
+                    q3.push("Jackson");
+                }
+                if (franklin) {
+                    q3.push("Franklin");
+                }
+                var red = $("#Red").is(":checked");
+                var white = $("#White").is(":checked");
+                var blue = $("#Blue").is(":checked");
+                var green = $("#Green").is(":checked");
+                let q8 = [];
+                if (red) {
+                    q8.push("Red");
+                }
+                if (white) {
+                    q8.push("White");
+                }
+                if (blue) {
+                    q8.push("Blue");
+                }
+                if (green) {
+                    q8.push("Green");
+                }
+                console.log(q3);
+                $.ajax({
+                    url: "/lab8",
+                    method: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        questions: {
+                            "1": $("#q1").val().toLowerCase(),
+                            "2": $("#q2").val(),
+                            "3": q3,
+                            "4": $("input[name=q4]:checked").val(),
+                            "5": q5_response,
+                            "6": $("#q6").val(),
+                            "7": $("#q7").val(),
+                            "8": q8
+                        }
+                    }),
+                    dataType: "json",
+                    success: function (result) {
+                        // Step 5. Process the results by changing the HTML
+                        // to display the results of the quiz
+                        console.log('result of call to POST router', result);
+                        $("#validationFdbk").html(""); //resets validation feedback
+                        score = 0;
+                        if(result.resu["1"] == "Correct"){
+                            rightAnswer(1);
+                        }else{
+                            wrongAnswer(1);
+                        }
+                        if(result.resu["2"] == "Correct"){
+                            rightAnswer(2);
+                        }else{
+                            wrongAnswer(2);
+                        }
+                        if(result.resu["3"] == "Correct"){
+                            rightAnswer(3);
+                        }else{
+                            wrongAnswer(3);
+                        }
+                        if(result.resu["4"] == "Correct"){
+                            rightAnswer(4);
+                        }else{
+                            wrongAnswer(4);
+                        }
+                        if(result.resu["5"] == "Correct"){
+                            rightAnswer(5);
+                        }else{
+                            wrongAnswer(5);
+                        }
+                        if(result.resu["6"] == "Correct"){
+                            rightAnswer(6);
+                        }else{
+                            wrongAnswer(6);
+                        }
+                        if(result.resu["7"] == "Correct"){
+                            rightAnswer(7);
+                        }else{
+                            wrongAnswer(7);
+                        }
+                        if(result.resu["8"] == "Correct"){
+                            rightAnswer(8);
+                        }else{
+                            wrongAnswer(8);
+                        }
+                        if(score < 80){
+                            $("#totalScore").attr('class', "bg-danger");
+                        }else {
+                            $("#totalScore").attr('class', "bg-success");
+                            $("#congratz").html("congratulations");
+                        }
+                        if(score == 100){
+                            $("#congratz").html("CONGRATULATIONS!!");
+                        }
+                        $("#totalScore").html('Total Score '+ score);
+                        attemptStore();
+                        if(sessionStorage.clickcount > 1){
+                            $("#previous").html('Previous results: '+ sessionStorage.getItem("responses"));
+                        }
 
+                        sessionStorage.setItem("responses",sessionStorage.getItem("responses") +score+" ")
+                    },
+                    error: function (xhr, status) {
+                        console.log('error calling to POST router', status);
+                    },
+                    complete: function () {
+                    }
+                });
+            }
+
+        });
+        function rightAnswer(index){
+            $("#q" + index + "Feedback").html("Correct!");
+            $("#q"+ index +"Feedback").attr("class", "bg-success text-white");
+            $("#markImg" + index).html("<img src='img/checkmark.png' alt='checkmark'>");
+            score += 12.5;
+        }
+
+        function wrongAnswer(index){
+            $("#q"+ index +"Feedback").html("Incorrect!");
+            $("#q"+ index +"Feedback").attr("class", "bg-warning text-white");
+            $("#markImg" + index).html("<img src='img/xmark.png' alt='xmark'>");
+        }
+
+        function attemptStore(){
+            if(typeof(Storage) !== "undefined") {
+                if (sessionStorage.clickcount) {
+                    sessionStorage.clickcount = Number(sessionStorage.clickcount)+1;
+                } else {
+                    sessionStorage.clickcount = 1;
+                }
+                $("#taken").html('Quiz Taken: '+ sessionStorage.clickcount + ' Time(s)');
+            } else {
+                $("#taken").html( "Sorry, your browser does not support web storage...");
+            }
+        }
     });
 </script>
 </html>
