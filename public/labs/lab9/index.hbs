@@ -58,6 +58,7 @@
             amount++;
         }
         if (amount != 1){
+            $("input[name=gender]:checked").prop("checked", false);
             valid = false;
             $("#searchResult").html("Select ONE Search Option");
         }
