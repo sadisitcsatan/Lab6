@@ -16,7 +16,7 @@ router.post('/lab8', function (req,res,next) {
        "7": "13",
        "8": ["Red", "White", "Blue"]
    };
-   const resu = grade(req.body,questions)
+   const resu = grade(req.body,questions);
    res.json({
        original: req.body,
        questions,

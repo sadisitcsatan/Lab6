@@ -1,0 +1,111 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="index.hbs">Home</a>
+</nav>
+<h1>{{title}}</h1>
+<hr />
+<!-- USE BOOTSTRAP FLEXBOX INSTEAD OF TABLES -->
+<div class="input-group mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-default">KeyWord</span>
+    </div>
+    <input id="keyword" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+</div>
+<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="">First and last name</span>
+    </div>
+    <input type="text" class="form-control" id="first">
+    <input type="text" class="form-control" id="last">
+</div>
+<br>
+<select id="category">
+    <option value="">Select One</option>
+</select>
+<br><br>
+<div id="gender">
+    <input type="radio" name="gender" id="male" value="m">
+        <label for="male">Male</label>
+    </input>
+    <input type="radio" name="gender" id="female" value="f">
+        <label for="female">Female</label>
+    </input>
+</div>
+<div><button id="search">Search</button></div>
+<div id="searchResult"></div>
+<span class="d-flex flex-column p-3 bg-secondary text-white justify-content-between" id="quotes">
+{{#each quotes}}
+    <span class="float-left">{{quote}}</span>
+    <div><a href="quotes?name={{fullName}}" class="text-dark">{{fullName}}</a></div><br>
+{{/each}}
+</span>
+<script>
+    let isValid = function(){
+      let valid = true;
+      let amount = 0;
+      if ($("#keyword").val() != ''){
+          amount++;
+      }
+        if ($("#first").val() != ''){
+            amount++;
+        }
+        if ($("#last").val() != ''){
+            amount++;
+        }
+        if ($("input[name=gender]:checked").val()){
+            amount++;
+        }
+        if ($("#category").val() != ''){
+            amount++;
+        }
+        if (amount != 1){
+            valid = false;
+            $("#searchResult").html("Select ONE Search Option");
+        }
+      return valid;
+    };
+    $(document).ready(function () {
+        $("body").attr("class",'text-center');
+        $.ajax({
+            method: "POST",
+            url: "/lab9/categories",
+            dataType: "json",
+            success: function (result,status) {
+                console.log(result);
+                for (var i =0; i < result.info.length; i++){
+                    $("#category").append("<option value='"+result.info[i].category+"'>"+result.info[i].category+"</option>");
+                }
+            }
+        })
+        $("#search").on("click",function () {
+            if (isValid()) {
+                $("#searchResult").empty();
+                $.ajax({
+                    method: "POST",
+                    url: "/lab9",
+                    dataType: "json",
+                    data: {
+                        "keyword": $("#keyword").val(),
+                        "first": $("#first").val(),
+                        "last": $("#last").val(),
+                        "gender": $("input[name=gender]:checked").val(),
+                        "Category": $("#category").val()
+                    },
+                    success: function (result, status) {
+                        $("input[name=gender]:checked").prop("checked", false);
+                        let fullname = '';
+                        console.log(result);
+                        $("#quotes").empty();
+                        // $(".float-left").remove();
+                        // $(".text-dark").remove();
+                        for (var i = 0; i< result.info.length;i++){
+                            fullname = result.info[i].fullName;
+                            console.log(fullname);
+                            $("#quotes").append("<div class=float-center>"+result.info[i].quote+"<div><a href=lab9/quotes?name="+fullname+" class=text-dark>"+fullname+"</a></div></div><br>");
+
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>

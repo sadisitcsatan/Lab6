@@ -3,10 +3,12 @@ const app = express();
 const request = require('request');
 var bodyParser = require('body-parser');
 
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 var project4Router = require('./routes/proj4');
 var lab8Router = require('./routes/lab8');
+var lab9Router = require('./public/labs/lab9/router');
 
 app.set("view engine", "ejs");
 app.engine('html',require('ejs').renderFile);
@@ -14,6 +16,7 @@ app.use(express.static("public"));
 //routes
 app.use(('/lab8', lab8Router));
 app.use('/proj4', project4Router);
+app.use('/lab9', lab9Router);
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));

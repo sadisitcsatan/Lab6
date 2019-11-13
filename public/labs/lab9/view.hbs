@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/lab9">Home</a>
+</nav>
+<h1>{{title}}</h1>
+<hr />
+<!-- USE BOOTSTRAP FLEXBOX INSTEAD OF TABLES -->
+
+<span class="d-flex p-3 bg-secondary text-white justify-content-between">
+        <span class="float-left">
+<!--            <span class='identity'>-->
+<!--                <div>"+info.info[0].firstName + " " +info.info[0].lastName+"</div>");-->
+<!--                <img src="+imgsrc+" alt=portrait width='250px' height='325px'>-->
+<!--            </span>-->
+<!--            <span class='life'>-->
+<!--                <div class='DOB'>DOB "+theree+"</div>");-->
+<!--                <div class='DOD'>DOD "+dod+"</div>");-->
+<!--                <div>Born in "+info.info[0].country+"</div>");-->
+<!--                <div>Profession: "+info.info[0].profession+"</div>");-->
+<!--                <h2>Biography</h2>");-->
+<!--                <p>{{info}}</p>-->
+<!--            </span>-->
+        </span>
+</span>
+<script>
+
+    $(document).ready(function(e){
+        //console.log({{info}});
+        let firstname = "{{fullName}}";
+        console.log(firstname);
+        firstname = firstname.split(" ");
+        firstname = firstname[0];
+        $.ajax({
+            method: "POST",
+            url: "/lab9/quotes",
+            dataType: "json",
+            data: {
+                "author": firstname
+            },
+            success: function(result,status){
+                console.log(result);
+                authInfo(result);
+            }
+        });
+    });
+    let authInfo = function (info) {
+        let imgsrc = info.info[0].portrait;
+        let tested = info.info[0].dob.split("T");
+        let fixe = info.info[0].dod.split("T");
+        let dod = fixe[0];
+        let theree = tested[0];
+        $(".float-left").empty();
+        $(".author").removeClass();
+        $(".float-left").append("<span class='identity'></span>");
+        $(".identity").append("<div>"+info.info[0].firstName + " " +info.info[0].lastName+"</div>");
+        $(".identity").append("<img src="+imgsrc+" alt=portrait width='250px' height='325px'>");
+        $(".float-left").append("<span class='life'></span>");
+        $(".life").append("<div class='DOB'>DOB "+theree+"</div>");
+        $(".life").append("<div class='DOD'>DOD "+dod+"</div>");
+        $(".life").append("<div>Born in "+info.info[0].country+"</div>");
+        $(".life").append("<div>Profession: "+info.info[0].profession+"</div>");
+        $(".life").append("<h2>Biography</h2>");
+        $(".life").append("<p>"+info.info[0].biography+"</p>")
+    }
+</script>

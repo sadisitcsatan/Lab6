@@ -58,9 +58,9 @@ Orientation: <select id="orient" name="orientatio">
                 }),
                 dataType: "json",
                 success: function (result, status) {
-                    console.log(result);
-                    console.log(result.parsedData.hits);
-                    console.log(result.parsedData.hits.length);
+                    //console.log(result);
+                    //console.log(result.parsedData.hits);
+                    //console.log(result.parsedData.hits.length);
                     let randomIndex = Math.floor(Math.random() * result.parsedData.hits.length);
                     if (result){
                         $("#img1Like").html(result.parsedData.hits[randomIndex].likes + " likes");
