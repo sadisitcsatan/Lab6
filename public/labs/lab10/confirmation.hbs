@@ -1,0 +1,33 @@
+<div class="text-center">
+<h1>
+    Are You Sure
+</h1>
+    <p>
+        Are you sure you want ot delete the author named {{firstname}} {{lastname}}? This cannot be undone
+    </p>
+    <button id="ohno" class="btn btn-success">No, Cancel</button>
+    <button id="ohyes" class="btn btn-danger">Yes, DELETE</button>
+    <div id="authorId" class="hidden">{{id}}</div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#authorId").hide();
+        $("#ohno").on("click", function () {
+            document.location.href = "/lab10";
+        });
+        $("#ohyes").on("click", function () {
+            $.ajax({
+                type: "POST",
+                url: "/lab10/delete",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "authorId": $("#authorId").html()
+                }),
+                success: function (data, status) {
+                    document.location.href = "/lab10";
+                }
+            });
+        });
+    });
+</script>

@@ -2,13 +2,19 @@ const express = require("express");
 const app = express();
 const request = require('request');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+app.use(session({
+    secret: 'uDPZH0ZRe6'
+}));
 
 var project4Router = require('./routes/proj4');
 var lab8Router = require('./routes/lab8');
 var lab9Router = require('./public/labs/lab9/router');
+var lab10Router = require('./public/labs/lab10/router');
+var authRouter = require('./public/auth/router');
 
 app.set("view engine", "ejs");
 app.engine('html',require('ejs').renderFile);
@@ -17,6 +23,8 @@ app.use(express.static("public"));
 app.use(('/lab8', lab8Router));
 app.use('/proj4', project4Router);
 app.use('/lab9', lab9Router);
+app.use('/lab10', lab10Router);
+app.use('/auth', authRouter);
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));

@@ -1,0 +1,65 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/lab10/logout">logout</a>
+</nav>
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>DOB</th>
+        <th>DOD</th>
+        <th>
+            <button id="addA">New Author</button>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each quotes}}
+        <tr>
+            <td>{{authorId}}</td>
+            <td>{{firstName}}</td>
+            <td>{{lastName}}</td>
+            <td class="dob">{{dob}}</td>
+            <td class="dod">{{dod}}</td>
+            <td>
+                <a href="lab10/quotes/add?firstname={{firstName}}&lastname={{lastName}}&dob={{dob}}&dod={{dod}}&id={{authorId}}" class="text-dark">Edit</a>
+                <a href="lab10/delete?firstname={{firstName}}&lastname={{lastName}}&id={{authorId}}" class="text-dark">Delete</a>
+            </td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>
+<script>
+    let isValid = function(){
+      let valid = true;
+      let amount = 0;
+      if ($("#keyword").val() != ''){
+          amount++;
+      }
+        if ($("#first").val() != ''){
+            amount++;
+        }
+        if ($("#last").val() != ''){
+            amount++;
+        }
+        if ($("input[name=gender]:checked").val()){
+            amount++;
+        }
+        if ($("#category").val() != ''){
+            amount++;
+        }
+        if (amount != 1){
+            $("input[name=gender]:checked").prop("checked", false);
+            valid = false;
+            $("#searchResult").html("Select ONE Search Option");
+        }
+      return valid;
+    };
+    $(document).ready(function () {
+        $("body").attr("class",'text-center');
+        $("#addA").on("click",function () {
+                document.location.href = "/lab10/quotes/add";
+            });
+    });
+</script>

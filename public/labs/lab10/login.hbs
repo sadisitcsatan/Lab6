@@ -1,0 +1,39 @@
+<div class="text-center">
+<h1>Administrator Login</h1>
+    <div>
+        <h4>Username</h4>
+        <input id="input" type="text">
+    </div>
+    <div>
+        <h4>Password</h4>
+        <input id="pass" type="password">
+    </div>
+    <div id="result"></div>
+    <br>
+    <button id="log">Login</button>
+</div>
+<script>
+    $(document).ready(function () {
+       $("#log").on("click",function () {
+          $.ajax({
+              type: "POST",
+              url: "/lab10/login",
+              dataType: "json",
+              contentType: "application/json",
+              data: JSON.stringify({
+                  "username": $("#input").val(),
+                  "password": $("#pass").val()
+              }),
+              success: function (data, status) {
+                  console.log(data);
+                  if (data.successful){
+                      document.location.href = '/lab10/'
+                  }else{
+                      $("#result").html(data.message);
+                      $("#result").addClass("text-danger");
+                  }
+              }
+          });
+       });
+    });
+</script>

@@ -1,0 +1,100 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/lab10/logout">logout</a>
+</nav>
+<h1 class="text-center"></h1>
+<hr />
+<!-- USE BOOTSTRAP FLEXBOX INSTEAD OF TABLES -->
+<div class="text-center">
+<label for="id" class="col-sm-2 col-form-label">Author ID</label>
+<span class="col-sm-10">
+        <input type="text" readonly id="id" value="{{id}}">
+    </span><br>
+
+    <label for="first" class="col-sm-2 col-form-label">First Name</label>
+    <span class="col-sm-10">
+        <input type="text" id="first" value="{{firstName}}">
+    </span><div id="firstResult"></div>
+    <label for="last" class="col-sm-2 col-form-label">Last Name</label>
+    <span class="col-sm-10">
+        <input type="text" id="last" value="{{lastName}}">
+    </span><div id="lastResult"></div>
+    <label for="dob" class="col-sm-2 col-form-label">DOB</label>
+    <span class="col-sm-10">
+        <input type="date" id="dob" value="{{dob}}">
+    </span><br>
+
+    <label for="dod" class="col-sm-2 col-form-label">DOD</label>
+    <span class="col-sm-10">
+        <input type="date" id="dod" value="{{dod}}">
+    </span><br>
+    <label for="gender" class="col-sm-2 col-form-label">Gender</label>
+    <span class="col-sm-10" id="gender">
+        <select name="gender" id="gender">
+            <option value="F">Female</option>
+            <option value="M">Male</option>
+            <option value="N">Non-Binary</option>
+            <option value="O">Other</option>
+        </select>
+    </span><br>
+
+     <button id="cancel">Cancel</button>
+    <button id="submit">Submit</button>
+</div>
+<script>
+    let isValid = function(){
+        var result = true;
+        if ($("#first").val() == ""){
+            $("#firstResult").html("Name required");
+            $("#firstResult").addClass("text-danger");
+            result = false;
+        }else{
+            $("#firstResult").html("");
+        }
+        if ($("#last").val() == ""){
+            $("#lastResult").html("Last name required");
+            $("#lastResult").addClass("text-danger");
+            result = false;
+        }else{
+            $("#lastResult").html("");
+        }
+        return result;
+    };
+    $(document).ready(function (e) {
+        // console.log($("#gender option:selected").val());
+        //console.log({{firstname}},{{lastname}},{{dob}},{{dod}},{{authorId}});
+        $("#cancel").on("click", function () {
+            document.location.href = "/lab10";
+        });
+        $("#submit").on("click", function () {
+            if (isValid()) {
+                $("#firstResult").html("");
+                $("#lastResult").html("");
+                $.ajax({
+                    type: "POST",
+                    url: "/lab10/quotes/add",
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        "authorId": $("#id").val(),
+                        "firstName": $("#first").val(),
+                        "lastName": $("#last").val(),
+                        "dob": $("#dob").val(),
+                        "dod": $("#dod").val(),
+                        "gender": $("#gender option:selected").val()
+                    }),
+                    success: function (data, status) {
+                        console.log("got data back", data);
+                        document.location.href = "/lab10";
+                    },
+                    error: function (xhr, status, error) {
+                        err = eval("(" + xhr.responseText + ")");
+                        console.error(err);
+                    },
+                    complete: function (data, status) { //optional, used for debugging purposes
+                        console.log(status);
+                    }
+                });
+            }
+        });
+    });
+</script>
