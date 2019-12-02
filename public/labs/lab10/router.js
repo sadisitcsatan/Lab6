@@ -5,7 +5,7 @@ const mysql = require('mysql');
 router.get('/logout', function (req,res,next) {
     if (req.session && req.session.username && req.session.username.length){
         delete req.session.username;
-        res.render('../public/labs/lab9/index.hbs');
+        res.render('../public/labs/lab10/login.hbs');
     }else{
         res.json({
            'successful': false,

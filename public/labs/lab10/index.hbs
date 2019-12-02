@@ -1,7 +1,18 @@
+<style>
+    table th {
+        text-align: center;
+    }
+
+    .table {
+        margin: auto;
+        width: 50% !important;
+    }
+</style>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/lab10/logout">logout</a>
 </nav>
-<table>
+
+<table class="table-bordered table-striped">
     <thead>
     <tr>
         <th>Id</th>
@@ -30,6 +41,7 @@
     {{/each}}
     </tbody>
 </table>
+
 <script>
     let isValid = function(){
       let valid = true;
